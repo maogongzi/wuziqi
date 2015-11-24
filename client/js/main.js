@@ -2,7 +2,10 @@ window.addEventListener('load', function() {
   var table = new Table({
     rows: 15,
     onChange: function(cells) {
-      console.table(cells);
+      // console.table(cells);
+    },
+    onWin: function(winner, result) {
+      console.log(winner, 'Win', result);
     }
   });
   

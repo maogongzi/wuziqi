@@ -11,6 +11,10 @@ var Table = (function() {
         || 15;
     this.onChange = config.onChange
         || function() {};
+    this.onWin = config.onWin
+        || function() {};
+        
+    this.winner = 0;
     
     this.cells = [];
     
@@ -35,6 +39,10 @@ var Table = (function() {
   };
   // update cell
   Table.prototype.updateCell = function(x, y, i) {
+    if(this.winner) {
+      throw new Error('Game over, can\'t move anymore!');
+      return;
+    }
     if(!this.cells[y][x]) {
       this.cells[y][x] = i;
       
@@ -42,7 +50,8 @@ var Table = (function() {
       
       this.onChange(this.cells);
     }else {
-      return new Error('Cell (' + x + ', ' + y + ') is not empty!');
+      throw new Error('Cell (' + x + ', ' + y + ') is not empty!');
+      return;
     }
   };
   // scan cell (x, y), check win or not
@@ -106,7 +115,10 @@ var Table = (function() {
             var result = this.checkDirection(x, y, i, j, item);
             
             if(result >= 5) {
-              console.log(item, 'Win', result);
+              this.winner = item;
+              
+              this.onWin(item, result);
+              
               return result;
             }
           }
