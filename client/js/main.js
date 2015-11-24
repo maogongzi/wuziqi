@@ -3,9 +3,11 @@ window.addEventListener('load', function() {
     rows: 15,
     onChange: function(cells) {
       // console.table(cells);
+      // render table view
     },
     onWin: function(winner, result) {
       console.log(winner, 'Win', result);
+      // show winner and freeze table
     }
   });
   
