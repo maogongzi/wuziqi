@@ -49,6 +49,7 @@ var Table = (function() {
       this.scanCell(x, y);
       
       this.onChange(this.cells);
+      return true;
     }else {
       throw new Error('Cell (' + x + ', ' + y + ') is not empty!');
       return;
@@ -62,11 +63,7 @@ var Table = (function() {
     if(!item) { // cell is empty
       return;
     }
-    /*
-    | 0 | 1 | 2 |
-    | 3 | 4 | 5 |
-    | 6 | 7 | 8 |
-    */
+    
     var matrix = [
       [{
         same: false,
@@ -102,9 +99,9 @@ var Table = (function() {
     for(var i = -1; i < 2; i++) {
       for(var j = -1; j < 2; j++) {
         if(x + i >= 0
-            && x + i <= len
+            && x + i < len
             && y + j >= 0
-            && y + j <= len) {
+            && y + j < len) {
           matrix[j + 1][i + 1].same = this.cells[y + j][x + i] === item;
           
           if(matrix[j + 1][i + 1].same
@@ -113,8 +110,6 @@ var Table = (function() {
             matrix[1 - j][1 - i].valid = false;
             
             var result = this.checkDirection(x, y, i, j, item);
-            
-            // console.log(result);
             
             if(result >= 5) {
               this.winner = item;
@@ -130,35 +125,54 @@ var Table = (function() {
   };
   // check direction (i, j) of (x, y)
   Table.prototype.checkDirection = function(x, y, i, j, item) {
-    var sum = 2;
+    var sum = 1;
+    
+    sum += this.checkDirA(x, y, i, j, item);
+    
+    sum += this.checkDirB(x, y, i, j, item);
+    
+    return sum;
+  };
+  
+  Table.prototype.checkDirA = function(x, y, i, j, item) {
+    var sum = 0;
     var len = this.rows;
     
-    var tickA = 2;
-    var nextItem = this.cells[y + j * tickA][x + i * tickA];
-    while(x + i * tickA >= 0
-        && x + i * tickA < len
-        && y + j * tickA >= 0
-        && y + j * tickA < len
-        && nextItem === item) {
-      // console.log('next', x + i * tickA, y + j * tickA, nextItem);
-      sum++;
-      
-      tickA++;
-      nextItem = this.cells[y + j * tickA][x + i * tickA];
+    for(var m = 1; m < len; m++) {
+      if(x + i * m >= 0
+          && x + i * m < len
+          && y + j * m >= 0
+          && y + j * m < len) {
+        var nextItem = this.cells[y + j * m][x + i * m];
+        
+        if(nextItem === item) {
+          sum ++;
+        }else {
+          return sum;
+        }
+      }
     }
     
-    var tickB = 1;
-    var prevItem = this.cells[y - j * tickB][x - i * tickB];
-    while(x - i * tickB >= 0
-        && x - i * tickB < len
-        && y - j * tickB >= 0
-        && y - j * tickB < len
-        && prevItem === item) {
-      // console.log('prev', x - i * tickB, y - j * tickB, prevItem);
-      sum++;
-      
-      tickB++;
-      prevItem = this.cells[y - j * tickB][x - i * tickB];
+    return sum;
+  };
+  
+  Table.prototype.checkDirB = function(x, y, i, j, item) {
+    var sum = 0;
+    var len = this.rows;
+    
+    for(var m = 1; m < len; m++) {
+      if(x + i - m >= 0
+          && x - i * m < len
+          && y - j * m >= 0
+          && y - j * m < len) {
+        var prevItem = this.cells[y - j * m][x - i * m];
+        
+        if(prevItem === item) {
+          sum ++;
+        }else {
+          return sum;
+        }
+      }
     }
     
     return sum;
