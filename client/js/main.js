@@ -6,7 +6,7 @@ window.addEventListener('load', function() {
       renderTable(cells);
     },
     onWin: function(winner, result) {
-      console.log(winner, 'Win', result);
+      window.alert(config[winner] + ' Win: ' + result);
       // show winner and freeze table
     }
   });

@@ -46,9 +46,9 @@ var Table = (function() {
     if(!this.cells[y][x]) {
       this.cells[y][x] = i;
       
-      this.scanCell(x, y);
-      
       this.onChange(this.cells);
+      
+      this.scanCell(x, y);
       return true;
     }else {
       throw new Error('Cell (' + x + ', ' + y + ') is not empty!');
