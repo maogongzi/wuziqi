@@ -114,6 +114,8 @@ var Table = (function() {
             
             var result = this.checkDirection(x, y, i, j, item);
             
+            // console.log(result);
+            
             if(result >= 5) {
               this.winner = item;
               
@@ -132,31 +134,31 @@ var Table = (function() {
     var len = this.rows;
     
     var tickA = 2;
+    var nextItem = this.cells[y + j * tickA][x + i * tickA];
     while(x + i * tickA >= 0
         && x + i * tickA < len
         && y + j * tickA >= 0
-        && y + j * tickA < len) {
-      var nextItem = this.cells[y + j * tickA][x + i * tickA];
-      
-      if(nextItem === item) {
-        sum++;
-      }
+        && y + j * tickA < len
+        && nextItem === item) {
+      // console.log('next', x + i * tickA, y + j * tickA, nextItem);
+      sum++;
       
       tickA++;
+      nextItem = this.cells[y + j * tickA][x + i * tickA];
     }
     
-    var tickB = 2;
+    var tickB = 1;
+    var prevItem = this.cells[y - j * tickB][x - i * tickB];
     while(x - i * tickB >= 0
         && x - i * tickB < len
         && y - j * tickB >= 0
-        && y - j * tickB < len) {
-      var prevItem = this.cells[y - j * tickB][x - i * tickB];
-      
-      if(prevItem === item) {
-        sum++;
-      }
+        && y - j * tickB < len
+        && prevItem === item) {
+      // console.log('prev', x - i * tickB, y - j * tickB, prevItem);
+      sum++;
       
       tickB++;
+      prevItem = this.cells[y - j * tickB][x - i * tickB];
     }
     
     return sum;

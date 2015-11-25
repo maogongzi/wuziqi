@@ -13,11 +13,8 @@ window.addEventListener('load', function() {
   
   table.updateCell(1, 1, 1);
   table.updateCell(2, 2, 1);
-  table.updateCell(1, 2, 1);
-  table.updateCell(3, 3, 1);
-  table.updateCell(1, 3, 1);
   table.updateCell(4, 4, 1);
-  table.updateCell(1, 4, 1);
   table.updateCell(5, 5, 1);
-  table.updateCell(1, 5, 1);
+  table.updateCell(6, 6, 1);
+  table.updateCell(3, 3, 1);
 });
